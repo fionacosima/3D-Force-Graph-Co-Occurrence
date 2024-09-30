@@ -11,6 +11,8 @@ import numpy as np
 # Load spacy model
 nlp = spacy.load('en_core_web_sm')
 
+### Functions
+
 # Decode strings
 def decode_message(message):
     try:
@@ -30,7 +32,7 @@ def extract_messages_from_file(file_path, sender_name):
 
 # Filter messages
 def filter_messages(messages):
-    return [msg for msg in messages if msg != "You sent an attachment." and not msg.startswith("Du hast das")]
+    return [msg for msg in messages if msg != "You sent an attachment." and not msg.startswith("Du hast das")] # Removing text generated from Instagram
 
 # Remove tokens with numbers
 def remove_tokens_with_numbers(token_list):
@@ -58,7 +60,7 @@ def normalize_tokens_with_fuzzy_matching(tokens, threshold=50):
     for token in tokens:
         token = replace_emojis_with_names(token)
         
-        if token.strip() == "" or token in ["(", ")", "[", "]", "{", "}", ":", ";", "!", "?", ",", ".", "<", "#", "%", '"', "*", "’", "-", '…', "'", "/", "uuuuu", "u", "you're", "urs", "uuuu"]:
+        if token.strip() == "" or token in ["(", ")", "[", "]", "{", "}", ":", ";", "!", "?", ",", ".", "<", "#", "%", '"', "*", "’", "-", '…', "'", "/", "uuuuu", "u", "you're", "urs", "uuuu"]: # Example, fit to my dataset
             continue
         
         if ":(" in token:
@@ -80,11 +82,11 @@ def normalize_tokens_with_fuzzy_matching(tokens, threshold=50):
         if re.search(r'^[ðâ]|https', token) or token.lower() in stopwords:
             continue
         
-        if re.search(r'^(baby|bebe|babe|bubu|bb|bebi)', token.lower()):
+        if re.search(r'^(baby|bebe|babe|bubu|bb|bebi)', token.lower()): # Example to normalize different spellings of 'baby'
             normalized_tokens.append('baby')
             continue
         
-        if re.search(r'((ha){2,}|(he){2,})', token.lower()):
+        if re.search(r'((ha){2,}|(he){2,})', token.lower()): # Example to normalize different spellings of 'haha'
             normalized_tokens.append('haha')
             continue
         
@@ -100,13 +102,10 @@ def normalize_tokens_with_fuzzy_matching(tokens, threshold=50):
     
     return normalized_tokens
 
-# Names and DJs
-name_dict = {"niko", "mandy", "camila", "sedef", "doris", "edolovati", "luna", "aysi", "kutchi", "birgit", "s.e.d.e.f", "patrick", "darina", "ays", "andy", "oli",
-             "zoya", "natascha", "vinnie", "maria", "ayse", "gigi", "hadid", "edo", "conxi", "fiona", "mandybitch", "fio", "alinas", "alina", "ramy", "moses"}
+# Names 
+name_dict = {"Fiona", "Elena"} # Example List, real data removed
 
-dj_dict = {"rhadoo", "vera", "locky", "ricardo", "sonja", "z@p", "shonky", "roza", "helmut"}
-
-# Lemmatize and normalize names and names of DJs so no information is lost
+# Lemmatize and normalize names 
 def lemmatize_and_normalize_names(tokens):
     lemmatized_tokens = []
     
@@ -115,9 +114,7 @@ def lemmatize_and_normalize_names(tokens):
     for token in doc:
         token_lower = token.text.lower()
         
-        if token_lower in dj_dict:
-            lemmatized_tokens.append("DJ")
-        elif token.ent_type_ == 'PERSON' or token_lower in name_dict:
+        if token.ent_type_ == 'PERSON' or token_lower in name_dict:
             lemmatized_tokens.append("PERSON")
         else:
             lemmatized_tokens.append(token.lemma_)
@@ -182,13 +179,11 @@ def create_co_occurrence_edges(co_occurrence_matrix, unique_words, threshold=1):
     
     return nodes_df, edges_df
 
+#### Processing
+
 # List of file paths to process
 file_paths = [
-    #'messages_edo_ig.json',
-    'message_camila.json',
-    'messages_camila2.json',
-    'messages_mandy_ig.json',
-    'messages_paula_ig.json'
+    #'messages_ig.json'; add your message file here
 ]
 
 # Process messages
@@ -204,8 +199,8 @@ co_occurrence_matrix, unique_words = create_co_occurrence_matrix(fiona_bigrams)
 nodes_df, edges_df = create_co_occurrence_edges(co_occurrence_matrix, unique_words)
 
 
-nodes_df.to_csv('nodes_co_occurrence_friends.csv', index=False)
-edges_df.to_csv('edges_co_occurrence_friends.csv', index=False)
+nodes_df.to_csv('nodes_co_occurrence.csv', index=False)
+edges_df.to_csv('edges_co_occurrence.csv', index=False)
 
 # Convert nodes & save
 nodes_json = nodes_df.to_dict(orient='records')
@@ -216,7 +211,7 @@ graph_data = {
     "links": edges_json
 }
 
-with open('graph_data_friends.json', 'w', encoding='utf-8') as f:
+with open('graph_data.json', 'w', encoding='utf-8') as f:
     json.dump(graph_data, f, ensure_ascii=False)
 
 print("Graph data saved to 'graph_data.json'")
