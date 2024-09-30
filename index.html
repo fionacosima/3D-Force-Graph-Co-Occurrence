@@ -1,0 +1,53 @@
+<head>
+  <style> 
+    body { margin: 0; } 
+    
+  </style>
+
+  <!-- Load the 3D Force Graph Library -->
+  <script src="https://unpkg.com/3d-force-graph"></script>
+  <!-- Load D3 Library -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+  <!-- Container for the 3D Graph -->
+  <div id="3d-graph"></div>
+
+  <script>
+    // Load
+    fetch('graph_data.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json(); 
+      })
+      .then(data => {
+        console.log('Fetched graph data:', data); 
+
+        // Initialize 
+        const Graph = ForceGraph3D()(document.getElementById('3d-graph'))
+          .graphData(data)  
+          .nodeColor(node => '#FF00EC')  
+          .nodeLabel(node => `${node.id}`)  
+          .linkDirectionalParticles(2)  
+          .linkDirectionalParticleSpeed(link => link.weight * 0.001)  
+          .linkWidth(link => link.weight) 
+          .linkColor(link => '#00FFFF')  
+          .onNodeClick(node => {
+            const distance = 40;
+            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+
+            Graph.cameraPosition(
+              { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio },  
+              node,  
+              3000  
+            );
+          });
+
+        console.log("Graph initialized.");
+      })
+      .catch(err => console.error('Error loading graph data:', err));  
+  </script>
+</body>
