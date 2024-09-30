@@ -7,7 +7,7 @@ This project was developed as part of the **Data Art** module in my master's pro
 This project involves three key components:
 1. **Data Pre-processing (dataAnalysis)**: Pre-processing selected Instagram chats to create a **Co-Occurrence Matrix**.
 2. **3D Visualization (index.html)**: The matrix data is visualized using a 3D Force Graph, rendered in the `index.html`.
-3. **Data (graph_data.json)**: The pre-processed data used to generate the graph is stored in `graph_data.json`.
+3. **Data (graph_data.json)**: Nodes and Link data generated in dataAnalysis used to generate the graph.
 
 
 ## Installation
