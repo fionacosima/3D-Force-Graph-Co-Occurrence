@@ -38,9 +38,9 @@ To run this project locally, you need the following:
 ### Running Data Analysis
 
 Adjust the dataAnalysis script to your data and run it to create the graph_data.json file. 
-    ```bash
+
     python dataAnalysis.py
-    ```
+
 ### Viewing the 3D Force Graph
 The index.html file visualizes the generated graph_data.json using a 3D Force Graph. To view the graph run:
 
