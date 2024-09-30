@@ -1,9 +1,9 @@
-# Data Self-Portrait - 3D Force Graph Visualization
+# Quantified Self-Portrait - 3D Force Graph Visualization
 
 ## Description
-This project was developed as part of the **Data Art** module in my master's program. The objective was to create a **data self-portrait** by analyzing selected Instagram chats, generating a **Co-Occurrence Matrix**, and visualizing it through a **3D Force Graph**. This visualization provides an artistic representation of my interactions in a unique data-driven form.
+This project was developed as part of the **Data Art** module in my master's program. The objective was to create a **self-portrait** by analyzing selected Instagram chats, generating a **Co-Occurrence Matrix**, and visualizing it through a **3D Force Graph**. This visualization provides an artistic representation of my interactions in a unique data-driven form. To view my graph, skip the first steps and run directly the python -m http.server command.
 
-## Project Overview
+## Project Overview 
 This project involves three key components:
 1. **Data Pre-processing (dataAnalysis)**: Pre-processing selected Instagram chats to create a **Co-Occurrence Matrix**.
 2. **3D Visualization (index.html)**: The matrix data is visualized using a 3D Force Graph, rendered in the `index.html`.
@@ -17,7 +17,7 @@ To run this project locally, you need the following:
 - Python 3.x
 - [Poetry](https://python-poetry.org/docs/#installation) (for dependency management)
 
-## Steps
+## Steps for own data Processing
 
 1. **Clone the repository:**
    ```bash
@@ -37,11 +37,11 @@ To run this project locally, you need the following:
 
 ### Running Data Analysis
 
-Adjust the dataAnalysis script to your data and run it to create the graph_data.json file. 
+Adjust the dataAnalysis script to your data, include your instagram message files, adjust your name and run it to create the graph_data.json file. 
    ```bash
     python dataAnalysis.py
    ```
-### Viewing the 3D Force Graph
+### Viewing the 3D Force Graph 
 The index.html file visualizes the generated graph_data.json using a 3D Force Graph. To view the graph run:
    ```bash
     python -m http.server
